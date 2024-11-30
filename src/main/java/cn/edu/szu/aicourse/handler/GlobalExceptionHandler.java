@@ -16,6 +16,7 @@ public class GlobalExceptionHandler {
         return Result.failed(ResponseCodeConstants.BAD_REQUEST, e.getMessage());
     }
 
+    @ExceptionHandler(Exception.class)
     public Result<?> handleException(Exception e){
         log.error("系统异常", e);
         return Result.failed("系统异常");

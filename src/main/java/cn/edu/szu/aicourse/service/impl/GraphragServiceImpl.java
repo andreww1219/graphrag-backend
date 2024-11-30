@@ -3,6 +3,7 @@ package cn.edu.szu.aicourse.service.impl;
 import cn.edu.szu.aicourse.service.GraphragService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class GraphragServiceImpl implements GraphragService {
@@ -13,8 +14,7 @@ public class GraphragServiceImpl implements GraphragService {
     private String neo4jRoot;
 
     @Override
-    public void uploadTxtFile() {
-
+    public void uploadTxtFile(MultipartFile file) {
     }
 
     @Override

@@ -3,3 +3,9 @@ server:
 spring:
   application:
     name: graphrag-backend
+
+graphrag:
+  root: D:\.py\PythonProject\graphrag
+
+neo4j:
+  root: D:\Neo4j\neo4j-community-5.22.0

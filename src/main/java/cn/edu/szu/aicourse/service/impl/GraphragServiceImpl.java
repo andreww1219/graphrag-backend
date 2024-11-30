@@ -9,6 +9,9 @@ public class GraphragServiceImpl implements GraphragService {
     @Value("${graphrag.root}")
     private String graphragRoot;
 
+    @Value("${neo4j.root}")
+    private String neo4jRoot;
+
     @Override
     public void uploadTxtFile() {
 

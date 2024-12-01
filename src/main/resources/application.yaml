@@ -15,6 +15,9 @@ graphrag:
 
 neo4j:
   root: D:\Neo4j\neo4j-community-5.22.0
+  uri: http://localhost:7474
+  username: neo4j
+  password: neo4j
 
 file:
   upload:

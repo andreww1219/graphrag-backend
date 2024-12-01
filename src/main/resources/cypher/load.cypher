@@ -90,13 +90,13 @@ CREATE (cr:CommunityReport {
 });
 
 // 8. Create indexes for better performance
-CREATE INDEX FOR (d:Document) ON (d.id);
-CREATE INDEX FOR (t:TextUnit) ON (t.id);
-CREATE INDEX FOR (e:Entity) ON (e.id);
-CREATE INDEX FOR (r:Relationship) ON (r.id);
-CREATE INDEX FOR (n:Node) ON (n.id);
-CREATE INDEX FOR (c:Community) ON (c.id);
-CREATE INDEX FOR (cr:CommunityReport) ON (cr.id);
+// CREATE INDEX FOR (d:Document) ON (d.id);
+// CREATE INDEX FOR (t:TextUnit) ON (t.id);
+// CREATE INDEX FOR (e:Entity) ON (e.id);
+// CREATE INDEX FOR (r:Relationship) ON (r.id);
+// CREATE INDEX FOR (n:Node) ON (n.id);
+// CREATE INDEX FOR (c:Community) ON (c.id);
+// CREATE INDEX FOR (cr:CommunityReport) ON (cr.id);
 
 // 9. Create relationships after all nodes are imported
 MATCH (d:Document)

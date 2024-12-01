@@ -94,6 +94,18 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.9.7</version> <!-- 使用合适的AspectJ版本 -->
 		</dependency>
+		<!-- Neo4j  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-neo4j</artifactId>
+			<!--<exclusions>
+                <exclusion>
+                    <artifactId>neo4j-java-driver</artifactId>
+                    <groupId>org.neo4j.driver</groupId>
+                </exclusion>
+            </exclusions>-->
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -2,15 +2,21 @@ package cn.edu.szu.aicourse.service.impl;
 
 import cn.edu.szu.aicourse.common.python.ActivatePythonEnv;
 import cn.edu.szu.aicourse.service.GraphragService;
+import cn.edu.szu.aicourse.service.Neo4jClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +28,8 @@ public class GraphragServiceImpl implements GraphragService {
 
     @Value("${neo4j.root}")
     private String neo4jRoot;
+
+    private final Neo4jClientService neo4jClientService;
 
     private final String[] buildCmd = {"python", "-m", "graphrag.index", "--root", "."};
 
@@ -61,19 +69,30 @@ public class GraphragServiceImpl implements GraphragService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // 将输出的 parquet 转换为 csv
-        try {
-            String latestOutputFolder = getLatestOutputFolder();
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void restoreResultToNeo4j() {
-        // TODO: 将结果转存Neo4j
+        // 将结果转存Neo4j
+        // 将输出的 parquet 转换为 csv
+        try {
+            String latestOutputFolder = getLatestOutputFolder();
+            String parquetDir = Paths.get(latestOutputFolder, "artifacts").toString();
+            String csvDir = Paths.get(neo4jRoot, "import").toString();
+
+            // 从resources目录中获取Python脚本
+            Resource resource = new ClassPathResource("scripts/parquet2csv.py"); // scripts/your_script.py是相对于resources的路径
+            String pythonScriptPath = resource.getFile().getAbsolutePath();
+            String[] cmd = {"python", pythonScriptPath, parquetDir, csvDir};
+
+            ProcessBuilder processBuilder = new ProcessBuilder();
+            processBuilder.command(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // TODO: 运行cypher语句加载import目录下的csv
+        String cypher = "";
+        neo4jClientService.run(cypher);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package cn.edu.szu.aicourse.controller;
 
-import cn.edu.szu.aicourse.common.Result;
+import cn.edu.szu.aicourse.common.result.Result;
 import cn.edu.szu.aicourse.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -32,4 +32,4 @@ public class FileController {
         List<String> files = fileService.getAllFiles();
         return Result.success(files, "获取文件列表成功");
     }
-} 
+}

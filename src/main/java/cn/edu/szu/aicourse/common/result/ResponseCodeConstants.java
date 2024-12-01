@@ -1,4 +1,4 @@
-package cn.edu.szu.aicourse.common;
+package cn.edu.szu.aicourse.common.result;
 
 public interface ResponseCodeConstants {
     /**

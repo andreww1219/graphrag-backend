@@ -1,4 +1,4 @@
-package cn.edu.szu.aicourse.common;
+package cn.edu.szu.aicourse.common.result;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;

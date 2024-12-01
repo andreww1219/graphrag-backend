@@ -21,11 +21,32 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-neo4j</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-logging</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-neo4j</artifactId>
 		</dependency>
 
 		<dependency>
@@ -54,6 +75,25 @@
 			<artifactId>minio</artifactId>
 			<version>8.5.14</version>
 		</dependency>
+		<!-- aspectj -->
+		<!-- Spring AOP依赖 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>5.3.20</version> <!-- 使用最新的Spring版本 -->
+		</dependency>
+		<!-- AspectJ运行时库 -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.7</version> <!-- 使用合适的AspectJ版本 -->
+		</dependency>
+		<!-- AspectJ织入器 -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.7</version> <!-- 使用合适的AspectJ版本 -->
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -67,6 +107,7 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
+					<include>**/*</include>
 					<include>*.yml</include>
 					<include>*.yaml</include>
 					<include>*.properties</include>

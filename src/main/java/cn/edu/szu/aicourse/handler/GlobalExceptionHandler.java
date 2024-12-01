@@ -1,7 +1,7 @@
 package cn.edu.szu.aicourse.handler;
 
-import cn.edu.szu.aicourse.common.ResponseCodeConstants;
-import cn.edu.szu.aicourse.common.Result;
+import cn.edu.szu.aicourse.common.result.ResponseCodeConstants;
+import cn.edu.szu.aicourse.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

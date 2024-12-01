@@ -1,6 +1,8 @@
 package cn.edu.szu.aicourse.controller;
 
-import cn.edu.szu.aicourse.common.Result;
+
+
+import cn.edu.szu.aicourse.common.result.Result;
 import cn.edu.szu.aicourse.service.GraphragService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

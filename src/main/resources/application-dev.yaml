@@ -4,9 +4,7 @@ graphrag:
 neo4j:
   root: D:\Neo4j\neo4j-community-5.22.0
 
-minio:
-  endpoint: http://localhost:9000
-  access-key: minioadmin
-  secret-key: minioadmin
-  bucket: graphrag-bucket
-  file-size-max: 10485760  # 10MB
+file:
+  upload:
+    path: ${user.dir}/uploads  # 使用项目根目录下的 uploads 文件夹
+    max-size: 10485760  # 10MB

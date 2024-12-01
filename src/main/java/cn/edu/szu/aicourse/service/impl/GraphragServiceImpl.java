@@ -1,21 +1,19 @@
 package cn.edu.szu.aicourse.service.impl;
 
 import cn.edu.szu.aicourse.service.GraphragService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@RequiredArgsConstructor
 public class GraphragServiceImpl implements GraphragService {
+    
     @Value("${graphrag.root}")
     private String graphragRoot;
 
     @Value("${neo4j.root}")
     private String neo4jRoot;
-
-    @Override
-    public void uploadTxtFile(MultipartFile file) {
-    }
 
     @Override
     public void invokeGraphRAG() {

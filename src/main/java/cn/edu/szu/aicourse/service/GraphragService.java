@@ -1,11 +1,6 @@
 package cn.edu.szu.aicourse.service;
 
-
-import org.springframework.web.multipart.MultipartFile;
-
 public interface GraphragService {
-    // 上传文件
-    void uploadTxtFile(MultipartFile file);
     // 调用GraphRAG
     void invokeGraphRAG();
     // 将结果转存Neo4j

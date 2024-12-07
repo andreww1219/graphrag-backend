@@ -99,14 +99,9 @@
     <loggers>
         <!--监控系统信息-->
         <!--若是additivity设为false，则 子Logger 只会在自己的appender里输出，而不会在 父Logger 的appender里输出。-->
-        <Logger name="com.szhg.common.web.log" level="info" additivity="false">
-            <AppenderRef ref="Async"/>
-        </Logger>
-        <Logger name="com.szhg.dttnotice" level="info" additivity="false">
-            <AppenderRef ref="Async"/>
-        </Logger>
+
         <!--root 节点用来指定项目的根日志，level:日志输出级别，共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < Fatal < OFF.-->
-        <root level="warn">
+        <root level="debug">
             <AppenderRef ref="Async" />
         </root>
     </loggers>

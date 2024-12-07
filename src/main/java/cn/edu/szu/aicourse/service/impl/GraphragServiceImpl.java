@@ -1,8 +1,9 @@
 package cn.edu.szu.aicourse.service.impl;
 
-import cn.edu.szu.aicourse.common.python.ActivatePythonEnv;
 import cn.edu.szu.aicourse.service.GraphragService;
 import cn.edu.szu.aicourse.service.Neo4jClientService;
+import cn.edu.szu.aicourse.utils.ProcessUtil;
+import cn.hutool.core.io.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,9 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,10 +27,10 @@ public class GraphragServiceImpl implements GraphragService {
 
     @Value("${neo4j.root}")
     private String neo4jRoot;
+    @Value("${python-venv.interpreter}")
+    private String pythonInterpreter;
 
     private final Neo4jClientService neo4jClientService;
-
-    private final String[] buildCmd = {"python", "-m", "graphrag.index", "--root", "."};
 
     private String getLatestOutputFolder() throws FileNotFoundException {
         // 获取最晚输出的文件夹
@@ -51,24 +50,10 @@ public class GraphragServiceImpl implements GraphragService {
         return maxAlphaFolder.getAbsolutePath();
     }
     @Override
-    @ActivatePythonEnv
     public void invokeGraphRAG() {
         // 调用GraphRAG
-        try {
-            // 创建ProcessBuilder对象
-            ProcessBuilder processBuilder = new ProcessBuilder();
-            // 设置工作目录
-            processBuilder.directory(new File(graphragRoot));
-            // 设置要执行的命令
-            processBuilder.command(buildCmd);
-            // 启动进程
-            Process process = processBuilder.start();
-            // 等待进程结束
-            int exitCode = process.waitFor();
-            log.info("Process exit code: " + exitCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String[] buildCmd = {pythonInterpreter, "-m", "graphrag.index", "--root", graphragRoot};
+        ProcessUtil.run(buildCmd);
     }
 
     @Override
@@ -79,20 +64,22 @@ public class GraphragServiceImpl implements GraphragService {
             String latestOutputFolder = getLatestOutputFolder();
             String parquetDir = Paths.get(latestOutputFolder, "artifacts").toString();
             String csvDir = Paths.get(neo4jRoot, "import").toString();
+            // 清空文件夹下的文件
+            FileUtil.clean(csvDir);
 
             // 从resources目录中获取Python脚本
-            Resource resource = new ClassPathResource("scripts/parquet2csv.py"); // scripts/your_script.py是相对于resources的路径
-            String pythonScriptPath = resource.getFile().getAbsolutePath();
-            String[] cmd = {"python", pythonScriptPath, parquetDir, csvDir};
+            String pythonScriptPath = new ClassPathResource("scripts/parquet2csv.py")
+                                            .getFile().getAbsolutePath();
+            String[] cmd = {pythonInterpreter, pythonScriptPath, parquetDir, csvDir};
+            ProcessUtil.run(cmd);
 
-            ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command(cmd);
-        } catch (IOException e) {
+            // 运行cypher语句加载import目录下的csv
+            File loadCypher = new ClassPathResource("cypher/load.cypher").getFile();
+            String cypher = FileUtil.readUtf8String(loadCypher);
+            neo4jClientService.run(cypher);
+        }catch (IOException e) {
             e.printStackTrace();
         }
-        // TODO: 运行cypher语句加载import目录下的csv
-        String cypher = "";
-        neo4jClientService.run(cypher);
     }
 
     @Override

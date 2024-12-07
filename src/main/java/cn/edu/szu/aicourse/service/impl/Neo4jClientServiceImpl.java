@@ -19,44 +19,35 @@ public class Neo4jClientServiceImpl implements Neo4jClientService {
     public Neo4jClientServiceImpl(Neo4jClientConfig neo4jConfig) {
         this.driver = GraphDatabase.driver(neo4jConfig.getUri(), AuthTokens.basic(neo4jConfig.getUsername(), neo4jConfig.getPassword()));
     }
-
-    /**
-     * 适用执行写逻辑
-     * @param cypher cypher
-     * @return Result 由于return之前session已经被关闭，该result不能被消费
-     * @throws Neo4jException 执行cypher出现异常
-     */
-    public Result run(String cypher) throws Neo4jException {
-        Session session = driver.session();
-        Transaction ts = session.beginTransaction();
+    public void run(String cypher) throws Neo4jException {
+        Session session = null;
+        Transaction tx = null;
         try {
-            Result result = ts.run(cypher);
-            ts.commit();
-            return result;
+            session = driver.session(); // 开启一个新的会话
+            tx = session.beginTransaction(); // 开启一个新的事务
+
+            // 分割Cypher语句，确保每个语句以分号结束
+            String[] queries = cypher.split(";");
+            log.info("ready to execute {} queries", queries.length);
+            for (String query : queries) {
+                // 跳过空字符串，这可能会在分割时出现
+                if (!query.trim().isEmpty()) {
+                    tx.run(query.trim()); // 执行每个Cypher语句
+                }
+//                log.info(query);
+            }
+            // 提交事务
+            tx.commit();
         } catch (Exception e) {
-            ts.rollback();
+            if (tx != null) {
+                tx.rollback(); // 如果发生异常，回滚事务
+            }
             log.error("run neo4j cypher error with ", e);
-            throw new Neo4jException("run " + cypher + " error with" + e.getMessage());
-        }finally {
-            ts.close();
-            session.close();
-        }
-    }
-
-    /**
-     * 用于执行读或写cypher语句
-     * @param gql cypher
-     * @return Result
-     * @throws Neo4jException 执行cypher出现异常
-     */
-    public Result exec(String gql) throws Neo4jException {
-        try {
-            Session session = driver.session();
-            log.info("exec {}", gql);
-            return session.run(gql);
-        } catch (Exception e) {
-            log.error("execute gql {} error ", gql, e);
-            throw new Neo4jException("execute " + gql + " error with" + e.getMessage());
+            throw new Neo4jException("run " + cypher + " error with " + e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close(); // 关闭会话
+            }
         }
     }
 }

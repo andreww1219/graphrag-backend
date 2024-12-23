@@ -13,15 +13,22 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class ProcessUtil {
-    public static void run(String[] cmd) {
-        run(cmd, null, 60);
+    private static final int defaultTimeout = 60;
+    public static String run(String[] cmd) {
+        return run(cmd, null, defaultTimeout);
     }
-    public static void run(String[] cmd, String directory, int timeout) {
+    public static String run(String[] cmd, String directory) {
+        return run(cmd, directory, defaultTimeout);
+    }
+    public static String run(String[] cmd, String directory, int timeout) {
+        if (cmd.length == 0 ) return "empty command";
+        StringBuilder sb = new StringBuilder();
         try {
             // 创建ProcessBuilder对象
             ProcessBuilder processBuilder = new ProcessBuilder();
-            Map<String, String> env = processBuilder.environment();
-            env.put("PYTHONIOENCODING", "utf-8");
+            // 如果是python命令，需指定IO编码
+            if (cmd[0].contains("python"))
+                processBuilder.environment().put("PYTHONIOENCODING", "utf-8");
             // 设置工作目录
             if (directory != null) processBuilder.directory(new File(directory));
             // 设置要执行的命令
@@ -37,6 +44,7 @@ public class ProcessUtil {
                     String line;
                     while ((line = stdInput.readLine()) != null) {
                         log.info(line);
+                        sb.append(line + '\n');
                     }
                 } catch (Exception e) {
                     log.error("Error reading standard output", e);
@@ -64,5 +72,6 @@ public class ProcessUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return sb.toString();
     }
 }

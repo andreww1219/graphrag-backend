@@ -21,9 +21,10 @@ neo4j:
 
 file:
   upload:
-    path: ${user.dir}/uploads
+    path: ${graphrag.root}\input
     max-size: 10485760  # 10MB
 
 python-venv:
   path: D:\VirtualVenv\graphrag
+  activate: ${python-venv.path}\Scripts\activate.bat
   interpreter: ${python-venv.path}\Scripts\python

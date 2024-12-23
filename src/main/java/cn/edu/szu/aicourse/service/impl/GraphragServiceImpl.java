@@ -22,6 +22,9 @@ import java.nio.file.Paths;
 @Slf4j
 public class GraphragServiceImpl implements GraphragService {
 
+    private final String splitBound = "SUCCESS: Global Search Response: ";
+
+
     @Value("${graphrag.root}")
     private String graphragRoot;
 
@@ -29,6 +32,8 @@ public class GraphragServiceImpl implements GraphragService {
     private String neo4jRoot;
     @Value("${python-venv.interpreter}")
     private String pythonInterpreter;
+    @Value("${python-venv.activate}")
+    private String pythonActivateScript;
 
     private final Neo4jClientService neo4jClientService;
 
@@ -84,7 +89,13 @@ public class GraphragServiceImpl implements GraphragService {
 
     @Override
     public String queryGraphRAG(String query) {
-        // TODO: 对RAG做查询
-        return null;
+        // 调用GraphRAG
+        String[] queryCmd = {pythonInterpreter, "-m", "graphrag.query", "--root", graphragRoot,
+                                "--method", "global", query};
+        String output = ProcessUtil.run(queryCmd);
+        int startIndex = output.indexOf(splitBound);
+        if (startIndex == -1)
+            return "query wrong";
+        return output.substring(startIndex + splitBound.length());
     }
 }

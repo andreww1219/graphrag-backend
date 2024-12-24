@@ -69,12 +69,7 @@
 			<artifactId>hutool-all</artifactId>
 			<version>5.8.0.M2</version>
 		</dependency>
-		<!-- Minio 上传文件 -->
-		<dependency>
-			<groupId>io.minio</groupId>
-			<artifactId>minio</artifactId>
-			<version>8.5.14</version>
-		</dependency>
+
 		<!-- aspectj -->
 		<!-- Spring AOP依赖 -->
 		<dependency>
@@ -104,6 +99,13 @@
                     <groupId>org.neo4j.driver</groupId>
                 </exclusion>
             </exclusions>-->
+		</dependency>
+
+		<!-- swagger -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.3.0</version>
 		</dependency>
 
 	</dependencies>

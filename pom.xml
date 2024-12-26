@@ -108,6 +108,13 @@
 			<version>2.3.0</version>
 		</dependency>
 
+		<!-- Maven配置 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>  <!-- 防止将devtools传递到其他模块中 -->
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -3,8 +3,12 @@ package cn.edu.szu.aicourse.controller;
 import cn.edu.szu.aicourse.common.result.Result;
 import cn.edu.szu.aicourse.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,9 +22,9 @@ public class FileController {
 
     private final FileService fileService;
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "上传File")
-    public Result<String> uploadFile(@RequestBody MultipartFile file) {
+    public Result<String> uploadFile(@RequestPart("file") MultipartFile file) {
         String fileName = fileService.saveFile(file);
         return Result.success(fileName, "文件上传成功");
     }

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class ProcessUtil {
-    private static final int defaultTimeout = 60;
+    private static final int defaultTimeout = 3600;
     public static String run(String[] cmd) {
         return run(cmd, null, defaultTimeout);
     }
